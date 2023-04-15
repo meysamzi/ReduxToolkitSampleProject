@@ -1,6 +1,11 @@
-import { Box, Card, Typography } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { changeTitle } from "../Features/Atm/Slice";
+import { Box, Card, Typography, Button } from "@mui/material";
 
 const TodoCards = ({ data }) => {
+  const { dataUpdateRes } = useSelector((store) => store.todo);
+  const dispatch = useDispatch();
+
   return (
     <Card
       sx={{
@@ -25,6 +30,11 @@ const TodoCards = ({ data }) => {
           </Typography>
         </Box>
       ))}
+      <Box>
+        <Button onClick={() => dispatch(changeTitle(data))} variant="contained">
+          Change Title
+        </Button>
+      </Box>
     </Card>
   );
 };

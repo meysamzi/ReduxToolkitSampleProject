@@ -13,7 +13,6 @@ function App() {
   let slicedData = useRef([]);
   let inView = useIntersectionObserver(intersectionObserverElement);
   slicedData.current = todoData?.slice(0, dataCounter);
-  console.log(todoData);
 
   useEffect(() => {
     dispatch(getTodoData());
