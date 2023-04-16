@@ -13,8 +13,8 @@ function App() {
   const intersectionObserverElement = useRef(null);
   let slicedData = useRef([]);
   let inView = useIntersectionObserver(intersectionObserverElement);
-  slicedData.current = todoData?.slice(0, dataCounter);
-  console.log(todoData);
+  slicedData.current =
+    Array.isArray(todoData) && todoData.slice(0, dataCounter);
   useEffect(() => {
     dispatch(getTodoData());
   }, []);
@@ -77,6 +77,7 @@ function App() {
               ))}
             </Card>
           ) : Object.keys(dataUpdateRes).length === 0 ? (
+            Array.isArray(slicedData.current) &&
             slicedData.current?.map((data) => <TodoCards data={data} />)
           ) : null}
         </Box>
