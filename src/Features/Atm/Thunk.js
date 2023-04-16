@@ -8,7 +8,7 @@ export const getTodoDataThunk = async () => {
 
 export const changeTitleThunk = async (data) => {
   const url = `https://jsonplaceholder.typicode.com/posts/${data?.id}`;
-  fetch(url, {
+  return fetch(url, {
     method: "PUT",
     body: JSON.stringify({
       id: data?.id,

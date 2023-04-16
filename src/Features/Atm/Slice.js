@@ -4,7 +4,7 @@ import { getTodoDataThunk, changeTitleThunk } from "./Thunk";
 const initialState = {
   isGetDataLoading: true,
   todoData: [],
-  isUpdateDataLoading: true,
+  isUpdateDataLoading: false,
   dataUpdateRes: {},
 };
 
