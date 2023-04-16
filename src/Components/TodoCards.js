@@ -1,9 +1,8 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { changeTitle } from "../Features/Atm/Slice";
-import { Box, Card, Typography, Button, CircularProgress } from "@mui/material";
+import { Box, Card, Typography, Button } from "@mui/material";
 
 const TodoCards = ({ data }) => {
-  const { dataUpdateRes } = useSelector((store) => store.todo);
   const dispatch = useDispatch();
 
   return (
@@ -15,9 +14,9 @@ const TodoCards = ({ data }) => {
         gap: "1rem",
       }}
     >
-      {Object.keys(data).map((objectKey) => (
+      {Object.keys(data)?.map((objectKey) => (
         <Box
-          key={objectKey.id}
+          key={objectKey?.id}
           sx={{
             display: "flex",
             //   justifyContent: "space-between",
