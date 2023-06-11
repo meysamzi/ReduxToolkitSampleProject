@@ -1,0 +1,61 @@
+import axios from "axios";
+
+export const axiosConfig = axios.create({
+  baseURL: "https://localhost:3001/",
+});
+
+axiosConfig.interceptors.request.use(
+  (config) => {
+    let access_token = localStorage.getItem("access_token");
+
+    access_token && (config.headers.Authorization = `Bearer ${access_token}`);
+
+    return config;
+  },
+  (error) => {
+    return error;
+  }
+);
+
+axiosConfig.interceptors.response.use(
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response.status === 401) {
+      let refresh_token = localStorage.getItem("refresh_token");
+
+      if (refresh_token) {
+        axios
+          .post("users/token/refresh/", { refresh: refresh_token })
+          .then((refreshResult) => {
+            localStorage.setItem("access_token", refreshResult.data.access);
+
+            error.config.headers.Authorization = `Bearer ${refreshResult.data.access}`; // set new access token in request
+
+            axiosConfig.request(error.config); //  send that request again with new access token
+          })
+
+          .catch((refreshError) => {
+            if (refreshError.response.status === 401) {
+              // if also refresh token is not valid, both tokens is remove
+
+              localStorage.removeItem("refresh_token");
+
+              localStorage.removeItem("access_token");
+
+              // delete Auth header from request - maybe the endpoint accept really authed user or not authed user
+
+              // the not valid token can make mistaks in request
+
+              delete error.config.headers.Authorization;
+
+              authApi.request(error.config); //  send that request again with new access token
+            }
+          });
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
